@@ -18,7 +18,7 @@ EXAMPLE:       $ az group create --location northcentralus --name h16r-compute
 SYNTAX:        $ az group deployment create --resource-group <RG_name> --template-file <path_to_azuredeploy_<vnet-option>.json> --parameters <path_to_params_file>
 
 EXAMPLE:       $ az group deployment create --resource-group h16r-compute --template-file azuredeploy-newvnet.json --parameters azuredeploy-newvnet-h16r.parameters.json
- 
+
 Once created, you'll want to scp the user-authentication.sh script to the jumpbox node, and run it using the following syntax:
  
 SYNTAX:        $ ./user-authentication.sh <username> <password> <ip_prefix>
