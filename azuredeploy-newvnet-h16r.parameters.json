@@ -1,0 +1,27 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmssSku": {
+      "value": "Standard_H16r"
+    },
+    "jumpboxSku": {
+      "value": "Standard_D1_v2"
+    },
+    "CentOSversion": {
+      "value": "6.8"
+    },
+    "vmssName": {
+      "value": "bhw-vmss-01"
+    },
+    "instanceCount": {
+      "value": 3
+    },
+    "adminUsername": {
+      "value": "bhwadmin"
+    },
+    "adminPassword": {
+      "value": "P4ssw0rdP4ssw0rd!"
+    }
+  }
+}
