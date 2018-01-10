@@ -6,10 +6,36 @@
       "type": "string",
       "defaultValue": "Standard_H16r",
       "allowedValues": [
-        "Standard_A8",
-        "Standard_A9",
-        "Standard_H16r",
-        "Standard_H16mr"
+                "Standard_A8",
+                "Standard_A9",
+                "Standard_A10",
+                "Standard_A11",
+                "Standard_F1",
+                "Standard_F2",
+                "Standard_F4",
+                "Standard_F8",
+                "Standard_F16",
+                "Standard_D1_v2",
+                "Standard_D2_v2",
+                "Standard_D3_v2",
+                "Standard_D4_v2",
+                "Standard_D5_v2",
+                "Standard_D11_v2",
+                "Standard_D12_v2",
+                "Standard_D13_v2",
+                "Standard_D14_v2",
+                "Standard_D15_v2",
+                "Standard_D1_v2",
+                "Standard_H8",
+                "Standard_H8m",
+                "Standard_H16",
+                "Standard_H16m",
+                "Standard_H16r",
+                "Standard_H16mr",
+                "Standard_NC6",
+                "Standard_NC12",
+                "Standard_NC24",
+                "Standard_NC24r"
         ],
       "metadata": {
         "description": "Size of VMs in the VM Scale Set."
@@ -28,6 +54,7 @@
                             "Standard_D2_v2",
                             "Standard_D3_v2",
                             "Standard_D4_v2",
+                            "Standard_D5_v2",
                             "Standard_D11_v2",
                             "Standard_D12_v2",
                             "Standard_D13_v2",
@@ -37,9 +64,7 @@
                             "Standard_F2",
                             "Standard_F4",
                             "Standard_F8",
-                            "Standard_F16",
-                            "Standard_D3_v2",
-                            "Standard_D4_v2"
+                            "Standard_F16"
                             ],
           "metadata": {
               "description": "Size of the jump box VM."
@@ -50,12 +75,18 @@
           "defaultValue": "6.8",
           "allowedValues": [
                             "6.5",
+                            "6.6",
+                            "6.7",
                             "6.8",
+                            "6.9",
+                            "7.0",
                             "7.1",
-                            "7.3"
+                            "7.2",
+                            "7.3",
+                            "7.4"
                             ],
           "metadata": {
-              "description": "The HPC specific CentOS version for the VMs."
+              "description": "The specific CentOS version for the VMs."
           }
       },
     "vmssName": {
@@ -83,19 +114,7 @@
       "metadata": {
         "description": "Admin password on all VMs."
       }
-    },
-      "vnetName": {
-          "type": "string",
-          "metadata": {
-              "description": "Name of the existing vnet to which the new nodes are to be attached."
-          }
-      },
-      "subnetName": {
-          "type": "string",
-          "metadata": {
-              "description": "Name of the existing subnet which exists in the vnet."
-          }
-      }
+    }
   },
   "variables": {
     "namingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
@@ -108,10 +127,10 @@
     "jumpBoxNicName": "[concat(variables('jumpBoxName'), 'nic')]",
     "storageAccountType": "Standard_LRS",
     "newStorageAccountSuffix": "[concat(variables('namingInfix'), 'sa')]",
-    "addressPrefix": "10.10.10.0/24",
-    "subnetPrefix": "10.10.10.0/26",
-    "virtualNetworkName": "[parameters('vnetName')]",
-    "subnetName": "[parameters('subnetName')]",
+    "addressPrefix": "10.0.0.0/16",
+    "subnetPrefix": "10.0.0.0/24",
+    "virtualNetworkName": "[concat(variables('namingInfix'), 'vnet')]",
+    "subnetName": "[concat(variables('namingInfix'), 'subnet')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "publicIPAddressName": "[concat(variables('namingInfix'), 'pip')]",
@@ -120,7 +139,7 @@
     "ipConfigName": "[concat(variables('namingInfix'), 'ipconfig')]",
     "osType": {
       "publisher": "openlogic",
-      "offer": "CentOS-HPC",
+      "offer": "CentOS",
       "sku": "[parameters('CentOSversion')]",
       "version": "latest"
     },

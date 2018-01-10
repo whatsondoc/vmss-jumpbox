@@ -4,12 +4,36 @@
   "parameters": {
     "vmssSku": {
       "type": "string",
-      "defaultValue": "Standard_H16r",
       "allowedValues": [
-        "Standard_A8",
-        "Standard_A9",
-        "Standard_H16r",
-        "Standard_H16mr"
+                        "Standard_A8",
+                        "Standard_A9",
+                        "Standard_A10",
+                        "Standard_A11",
+                        "Standard_F1",
+                        "Standard_F2",
+                        "Standard_F4",
+                        "Standard_F8",
+                        "Standard_F16",
+                        "Standard_D1_v2",
+                        "Standard_D2_v2",
+                        "Standard_D3_v2",
+                        "Standard_D4_v2",
+                        "Standard_D5_v2",
+                        "Standard_D11_v2",
+                        "Standard_D12_v2",
+                        "Standard_D13_v2",
+                        "Standard_D14_v2",
+                        "Standard_D15_v2",
+                        "Standard_H8",
+                        "Standard_H8m",
+                        "Standard_H16",
+                        "Standard_H16m",
+                        "Standard_H16r",
+                        "Standard_H16mr",
+                        "Standard_NC6",
+                        "Standard_NC12",
+                        "Standard_NC24",
+                        "Standard_NC24r"
         ],
       "metadata": {
         "description": "Size of VMs in the VM Scale Set."
@@ -17,7 +41,6 @@
     },
       "jumpboxSku": {
           "type": "string",
-          "defaultValue": "Standard_D1_v2",
           "allowedValues": [
                             "Standard_A1_v2",
                             "Standard_A1_v2",
@@ -28,6 +51,7 @@
                             "Standard_D2_v2",
                             "Standard_D3_v2",
                             "Standard_D4_v2",
+                            "Standard_D5_v2",
                             "Standard_D11_v2",
                             "Standard_D12_v2",
                             "Standard_D13_v2",
@@ -37,9 +61,7 @@
                             "Standard_F2",
                             "Standard_F4",
                             "Standard_F8",
-                            "Standard_F16",
-                            "Standard_D3_v2",
-                            "Standard_D4_v2"
+                            "Standard_F16"
                             ],
           "metadata": {
               "description": "Size of the jump box VM."
@@ -50,9 +72,15 @@
           "defaultValue": "6.8",
           "allowedValues": [
                             "6.5",
+                            "6.6",
+                            "6.7",
                             "6.8",
+                            "6.9",
+                            "7.0",
                             "7.1",
-                            "7.3"
+                            "7.2",
+                            "7.3",
+                            "7.4"
                             ],
           "metadata": {
               "description": "The HPC specific CentOS version for the VMs."
@@ -83,32 +111,48 @@
       "metadata": {
         "description": "Admin password on all VMs."
       }
-    }
+    },
+      "vnetName": {
+          "type": "string",
+          "metadata": {
+              "description": "Name of the existing vnet to which the new nodes are to be attached."
+          }
+      },
+      "vnetResourceGroup": {
+          "type": "string",
+          "metadata": {
+              "description": "Name of the Resource Group in which the vnet exists."
+          }
+      },
+      "subnetName": {
+          "type": "string",
+          "metadata": {
+              "description": "Name of the existing subnet which exists in the vnet."
+          }
+      }
   },
   "variables": {
     "namingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
     "longNamingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
     "jumpBoxName": "[concat(variables('namingInfix'), 'jbox')]",
-    "jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'jumpboxsa')), 'jb')]",
+    "jumpBoxSAName": "[concat( parameters('vmssName'), uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix') ) ) )]",
     "jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
     "jumpBoxVHDContainerName": "[concat(variables('jumpBoxName'), 'vhd')]",
     "jumpBoxIPConfigName": "[concat(variables('jumpBoxName'), 'ipconfig')]",
     "jumpBoxNicName": "[concat(variables('jumpBoxName'), 'nic')]",
     "storageAccountType": "Standard_LRS",
     "newStorageAccountSuffix": "[concat(variables('namingInfix'), 'sa')]",
-    "addressPrefix": "10.0.0.0/16",
-    "subnetPrefix": "10.0.0.0/24",
-    "virtualNetworkName": "[concat(variables('namingInfix'), 'vnet')]",
-    "subnetName": "[concat(variables('namingInfix'), 'subnet')]",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "addressPrefix": "172.22.128.0/18",
+    "subnetPrefix": "172.22.129.0/24",
+    "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
     "publicIPAddressName": "[concat(variables('namingInfix'), 'pip')]",
     "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
     "nicName": "[concat(variables('namingInfix'), 'nic')]",
     "ipConfigName": "[concat(variables('namingInfix'), 'ipconfig')]",
     "osType": {
       "publisher": "openlogic",
-      "offer": "CentOS-HPC",
+      "offer": "CentOS",
       "sku": "[parameters('CentOSversion')]",
       "version": "latest"
     },
@@ -120,22 +164,22 @@
   "resources": [
     {
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('virtualNetworkName')]",
+      "name": "[parameters('vnetName')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2017-04-01",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[variables('addressPrefix')]"
-          ]
+        "properties": {
+            "addressSpace": {
+                "addressPrefixes": [
+                    "[variables('addressPrefix')]"
+            ]
         },
-        "subnets": [
-          {
-            "name": "[variables('subnetName')]",
-            "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]"
+            "subnets": [
+        {
+            "name": "[parameters('subnetName')]",
+                "properties": {
+                        "addressPrefix": "[variables('subnetPrefix')]"
+                }
             }
-          }
         ]
       }
     },
@@ -167,7 +211,7 @@
       "apiVersion": "2017-04-01",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -236,7 +280,7 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2017-03-30",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
       ],
       "sku": {
         "name": "[parameters('vmssSku')]",
@@ -271,7 +315,7 @@
                       "name": "[variables('ipConfigName')]",
                       "properties": {
                         "subnet": {
-                          "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'), '/subnets/', variables('subnetName'))]"
+                          "id": "[variables('subnetRef')]"
                         }
                       }
                     }

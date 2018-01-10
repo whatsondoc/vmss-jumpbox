@@ -12,13 +12,13 @@
       "value": "6.8"
     },
     "vmssName": {
-      "value": "bhw-vmss-01"
+      "value": "vmss-01"
     },
     "instanceCount": {
       "value": 3
     },
     "adminUsername": {
-      "value": "bhwadmin"
+      "value": "patacon"
     },
     "adminPassword": {
       "value": "P4ssw0rdP4ssw0rd!"
