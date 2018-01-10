@@ -13,16 +13,16 @@ The deployment process will be as follows (using the Azure CLI):
  
 <b>SYNTAX:</b>        $ az group create --location <location> --name <RG_name>
 
-<b>EXAMPLE:</b>       $ az group create --location northcentralus --name h16r-compute
+<b>EXAMPLE:</b>       $ az group create --location southcentralus --name h16-compute
 
 <b>SYNTAX:</b>        $ az group deployment create --resource-group <RG_name> --template-file <path_to_azuredeploy_<vnet-option>.json> --parameters <path_to_params_file>
 
-<b>EXAMPLE:</b>       $ az group deployment create --resource-group h16r-compute --template-file azuredeploy-newvnet.json --parameters azuredeploy-newvnet-h16r.parameters.json
+<b>EXAMPLE:</b>       $ az group deployment create --resource-group h16r-compute --template-file azuredeploy-newvnet.json --parameters azuredeploy-newvnet-ER.parameters.json
 
-Once created, you'll want to scp the user-authentication.sh script to the jumpbox node, and run it using the following syntax:
+Once created, you'll want to scp the passwordless-ssh.sh script to the jumpbox node, and run it using the following syntax:
  
-<b>SYNTAX:</b>        $ ./user-authentication.sh <username> <password> <ip_prefix>
+<b>SYNTAX:</b>        $ ./passwordless-ssh.sh <username> <password> <ip_prefix>
 
-<b>EXAMPLE:</b>       $ ./user-authentication.sh benji 3xamplePassword! 10.0.0
+<b>EXAMPLE:</b>       $ ./passwordless-ssh.sh benji 3xamplePassword! 10.0.0
 
 A few packages are required for the user-authentication.sh script to function properly: epel-release, nmap & sshpass. epel-release & nmap can be installed via yum first, but sshpass comes from the epel-release repo, so you'll need to re-run yum install to have the epel-release repo populate (so we can grab sshpass).
