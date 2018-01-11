@@ -3,19 +3,19 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vmssSku": {
-      "value": "Standard_H16"
+      "value": "<<compute_SKU>>"
     },
     "jumpboxSku": {
-      "value": "Standard_D5_v2"
+      "value": "<<jumpbox_SKU>>"
     },
     "CentOSversion": {
-      "value": "6.8"
+      "value": "<<OS_version>>"
     },
     "vmssName": {
-      "value": "hpcvmss"
+      "value": "<<vmss_name>>"
     },
     "instanceCount": {
-      "value": 3
+      "value": <<number_of_compute_nodes>>
     },
     "adminUsername": {
       "value": "<<admin_username>>"
