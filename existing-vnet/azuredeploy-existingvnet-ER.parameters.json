@@ -18,19 +18,19 @@
       "value": 3
     },
     "adminUsername": {
-      "value": "jboxadmin"
+      "value": "<<admin_username>>"
     },
     "adminPassword": {
-      "value": "P4ssw0rdP4ssw0rd!"
+      "value": "<<insert_password>>"
     },
     "vnetName": {
-        "value": "hpcvnet01"
+        "value": "<<vnet_name>>"
     },
     "vnetResourceGroup": {
-        "value": "hpc-poc-cs-us"
+        "value": "<<resource_group_name>>"
     },
     "subnetName": {
-        "value": "HPC-1"
+        "value": "<<subnet_name>>"
     }
   }
 }
