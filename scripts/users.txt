@@ -1,4 +1,4 @@
-### Users file for use with the newusers program
+### DELETE ALL COMMENTED LINES BEFORE RUNNING ###
 
 # File syntax:
 # <username>:<password>:<uid>:<gid>:<gecos>:<home_dir>:<login_shell>

@@ -1,13 +1,15 @@
 #!/bin/bash
 
-mntpoint=/mnt/nfs
-remotehost=hpcvmssrg43sbw6r455cjbox
-exportedfs=/mnt/sharedstorage
+mntpoint=$6
+exportedfs=$5
+remotehost=$4
+password=$3
+username=$2
+hostname=$1
 remotefs=nfs
 
-
-sudo mkdir $mntpoint
-
-sudo mount -t $remotefs $remotehost:$exportedfs $mntpoint
-
-sudo echo "$remotehost:$exportedfs	$mntpoint	$remotefs	defaults 0 0" >> /etc/fstab
+ssh -t $username@$hostname << EOF
+	sudo mkdir $mntpoint
+	sudo mount -t $remotefs $remotehost:$exportedfs $mntpoint
+	echo "$remotehost:$exportedfs	$mntpoint	$remotefs	defaults 0 0" | sudo tee --append /etc/fstab
+EOF

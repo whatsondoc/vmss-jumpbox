@@ -3,34 +3,34 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vmssSku": {
-      "value": "<<compute_SKU>>"
+      "value": "Standard_H16"
     },
     "jumpboxSku": {
-      "value": "<<jumpbox_SKU>>"
+      "value": "Standard_D5_v2"
     },
     "CentOSversion": {
-      "value": "<<OS_version>>"
+      "value": "6.8"
     },
     "vmssName": {
-      "value": "<<vmss_name>>"
+      "value": "hpcvmss"
     },
     "instanceCount": {
-      "value": <<number_of_compute_nodes>>
+      "value": 5
     },
     "adminUsername": {
-      "value": "<<admin_username>>"
+      "value": "jboxadmin"
     },
     "adminPassword": {
-      "value": "<<insert_password>>"
+      "value": "fk27s^2hPls#fkMNq5D"
     },
     "vnetName": {
-        "value": "<<vnet_name>>"
+        "value": "hpcvnet01"
     },
     "vnetResourceGroup": {
-        "value": "<<resource_group_name>>"
+        "value": "hpc-poc-cs-us"
     },
     "subnetName": {
-        "value": "<<subnet_name>>"
+        "value": "HPC-1"
     }
   }
 }

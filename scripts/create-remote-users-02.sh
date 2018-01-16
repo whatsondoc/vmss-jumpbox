@@ -2,11 +2,11 @@
 
 set timeout -1
 
-set user "<username>"
-set password "<password>"
+set username [lindex $argv 2]
+set password [lindex $argv 1]
 set hostname [lindex $argv 0]
 
-spawn ./create-remote-users-03.sh $hostname
+spawn ./create-remote-users-03.sh $hostname $username
 
 expect "*?assword*:"
 

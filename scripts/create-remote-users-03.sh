@@ -1,7 +1,7 @@
 #!/bin/bash
 
-adminuser=<username>
 hostname=$1
+username=$2
 
-scp users.txt $adminuser@$hostname:/home/$adminuser/
-ssh -t $adminuser@$hostname "sudo newusers users.txt"
+scp users.txt $username@$hostname:/home/$username/
+ssh -t $username@$hostname "sudo newusers users.txt"

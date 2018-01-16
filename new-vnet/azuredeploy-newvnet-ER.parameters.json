@@ -3,25 +3,25 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vmssSku": {
-      "value": "<<modfiy>>"
+      "value": "Standard_H16"
     },
     "jumpboxSku": {
-      "value": "<<modify>>"
+      "value": "Standard_D5_v2"
     },
     "CentOSversion": {
-      "value": "<<modify>>"
+      "value": "6.8"
     },
     "vmssName": {
-      "value": "<<modify>>"
+      "value": "hpcvmss"
     },
     "instanceCount": {
-      "value": <<modify>>
+      "value": 3
     },
     "adminUsername": {
-      "value": "<<modify>>"
+      "value": "jboxadmin"
     },
     "adminPassword": {
-      "value": "<<modify>>"
+      "value": "dk5uaSJ!ks.8(sPv"
     }
   }
 }
