@@ -1,8 +1,0 @@
-### DELETE ALL COMMENTED LINES BEFORE RUNNING ###
-
-# File syntax:
-# <username>:<password>:<uid>:<gid>:<gecos>:<home_dir>:<login_shell>
-
-exampleuser:3xamplePa$$::::/home/exampleuser:/bin/bash
-dave:This!!IsMyPassword:500:501::/home/dave:/bin/ksh
-gloria:WhyDidTheChickenCrossTheRoad?:500:1000::/home/gloria:/bin/sh
