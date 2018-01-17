@@ -9,13 +9,13 @@ read -p "Have you installed epel-release, nmap & sshpass?
 Hit enter to continue if so, and are specifying arguments for the script to use...
 "
 
-#usage ./authMe2.sh [username] [password] [internalIP prefix]
-# ./authMe2.sh azureuser Azure@123 10.2.1
-USER=$1
-GROUP=$USER
-PASS=$2
-IPPRE=$3
+read -p "Enter the username to connect to the remote instances: " USER
+echo ""
+read -s -p "Enter the password for this user: " PASS
+echo ""
+read -p "Enter the IP prefix so we can discover all existing nodes (the first three octets will suffice): " IPPRE
 HEADNODE=`hostname`
+GROUP=$USER
 
 mkdir -p .ssh
 echo -e  'y\n' | ssh-keygen -f .ssh/id_rsa -t rsa -N ''
