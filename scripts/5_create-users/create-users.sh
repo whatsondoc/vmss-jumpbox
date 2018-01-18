@@ -1,6 +1,6 @@
 #!/bin/bash
 
-users="$HOME/users.txt"
+users="$HOME/scripts/5_create-users/users.txt"
 nodenames="$HOME/nodenames.txt"
 
 read -p "...Please ensure there is a completed $users & $nodenames file in this directory. $users needs input..."
