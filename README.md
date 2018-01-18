@@ -20,7 +20,16 @@ The deployment process will be as follows (using the Azure CLI):
 <b>EXAMPLE:</b>       $ az group deployment create --resource-group h16r-compute --template-file azuredeploy-newvnet.json --parameters azuredeploy-newvnet-ER.parameters.json
 
 
-Once the infrastructure has been created, there are a few nested scripts that offer various configuration options. 
+Once the infrastructure has been created, there are a few nested scripts that offer various configuration options. You can scp these scripts to your jumpbox/headnode using scp:
+
+SYNTAX:        $ scp -r vmss-jumpbox/scripts/ <username>@<public_ip>:/home/<username>
+
+EXAMPLE:       $ scp -r vmss-jumpbox/scripts/ useradmin@10.11.12.13:/home/useradmin
+
+You will be prompted to verify authenticity of the remote host the first time you try to connect.
+You may need to add executable permissions to the files (can be done by: $ chmod -R +x vmss-jumpbox/scripts/*)
+
+Details of these configuration scripts are as follows:
 
 <b>1_passwordless-ssh:</b> Allowing all nodes in the environment to communicate with each out without the need for a password
  
