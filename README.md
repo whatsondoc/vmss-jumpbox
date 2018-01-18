@@ -27,7 +27,7 @@ SYNTAX:        $ scp -r vmss-jumpbox/scripts/ <username>@<public_ip>:/home/<user
 EXAMPLE:       $ scp -r vmss-jumpbox/scripts/ useradmin@10.11.12.13:/home/useradmin
 
 You will be prompted to verify authenticity of the remote host the first time you try to connect.
-You may need to add executable permissions to the files (can be done by: $ chmod +x vmss-jumpbox/scripts/*)
+You may need to add executable permissions to the files (can be done by: $ chmod -R +x vmss-jumpbox/scripts/*)
 
 Details of these configuration scripts are as follows:
 
