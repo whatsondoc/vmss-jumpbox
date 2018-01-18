@@ -10,7 +10,8 @@ then
 	for i in {0..12}
 	do
 		az vm unmanaged-disk attach --new --vm-name $vmname --resource-group $rg --lun $i --size $size --name $vmname-datadisk-0$i
-	touch ./add-data-disks.completed
+	touch $HOME/2_add-data-disks.completed
+	done
 else
 	echo -e "This is a script that will run using the Azure CLI - it does not look as though this is installed.\n\nExiting...\n"
 	exit

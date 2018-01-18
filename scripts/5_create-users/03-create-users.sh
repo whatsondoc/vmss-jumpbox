@@ -3,7 +3,7 @@
 hostname=$1
 username=$2
 
-scp users.txt $username@$hostname:/home/$username/
+scp $HOME/users.txt $username@$hostname:/home/$username/
 ssh -t $username@$hostname "sudo newusers users.txt"
 
-touch ./create-users.completed
+touch $HOME/5_create-users.completed

@@ -67,6 +67,6 @@ For example, type 172.16.32 to allow all hosts on that network segment mount acc
 
 # Creating completed marker file
 
-	touch ./create-mdadm.completed
+	touch $HOME/3_create-mdadm.completed
 
 fi

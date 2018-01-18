@@ -20,4 +20,4 @@ chmod +x mountingsequence.sh
 scp mountingsequence.sh $username@$hostname:/home/$username
 ssh -t $username@$hostname "sudo ./mountingsequence.sh"
 
-touch ./mount-shared-storage.completed
+touch $HOME/4_mount-shared-storage.completed

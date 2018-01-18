@@ -9,7 +9,7 @@ set password [lindex $argv 2]
 set username [lindex $argv 1]
 set hostname [lindex $argv 0]
 
-spawn ./03-mount-shared-storage.sh $hostname $username $password $remotehost $exportedfs $mntpoint
+spawn scripts/4_mount-shared-storage/03-mount-shared-storage.sh $hostname $username $password $remotehost $exportedfs $mntpoint
 
 expect "*?assword*:"
 

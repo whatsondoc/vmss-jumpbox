@@ -49,4 +49,4 @@ for NAME in $NAMES; do
 
 done
 
-touch ./passwordless-ssh.completed
+touch $HOME/1_passwordless-ssh.completed
