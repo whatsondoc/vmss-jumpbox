@@ -22,11 +22,12 @@ The deployment process will be as follows (using the Azure CLI):
 
 Once the infrastructure has been created, there are a few nested scripts that offer various configuration options. You can scp these scripts to your jumpbox/headnode using scp:
 
-SYNTAX:        $ scp -r vmss-jumpbox/scripts/* <username>@<public_ip>:/home/<username>
+SYNTAX:        $ scp -r vmss-jumpbox/scripts/ <username>@<public_ip>:/home/<username>
 
-EXAMPLE:       $ scp -r vmss-jumpbox/scripts/* useradmin@10.11.12.13:/home/useradmin
+EXAMPLE:       $ scp -r vmss-jumpbox/scripts/ useradmin@10.11.12.13:/home/useradmin
 
 You will be prompted to verify authenticity of the remote host the first time you try to connect.
+You may need to add executable permissions to the files (can be done by: $ chmod +x vmss-jumpbox/scripts/*)
 
 Details of these configuration scripts are as follows:
 
