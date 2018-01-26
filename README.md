@@ -22,8 +22,10 @@ It may be a good idea to clone this GitHub repo to your user login on the Azure 
 
 <b>EXAMPLE:</b>       $ az group deployment create --resource-group h16r-compute --template-file azuredeploy-newvnet.json --parameters azuredeploy-newvnet-ER.parameters.json
 
+The deployment templates allow for the use of the custom script extension, to customise environments during the provisioning phase. Compiling scripts at executing at this stage is preferable, given VM Scale Sets can be expanded to accommodate additional nodes with the same configuration.
 
-Once the infrastructure has been created, there are a few nested scripts that offer various configuration options. You can scp these scripts to your jumpbox/headnode using scp:
+
+Should you wish to perform manual customisation, once the infrastructure has been created, there are a few nested scripts that offer various configuration options. You can scp these scripts to your jumpbox/headnode using scp:
 
 SYNTAX:        $ scp -r vmss-jumpbox/scripts/ <username>@<public_ip>:/home/<username>
 
