@@ -1,0 +1,740 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountType":  {
+      "type": "string",
+      "allowedValues": [
+                        "Standard_LRS",
+                        "Premium_LRS"
+                        ],
+      "metadata": {
+        "description": "Specify whether the VMs will be created using Standard (HDD) or Premium (SSD) storage."
+      }
+    },
+    "vmssSku": {
+      "type": "string",
+      "allowedValues": [
+                        "Standard_B1ms",
+                        "Standard_B1s",
+                        "Standard_B2ms",
+                        "Standard_B2s",
+                        "Standard_B4ms",
+                        "Standard_B8ms",
+                        "Standard_DS1_v2",
+                        "Standard_DS2_v2",
+                        "Standard_DS3_v2",
+                        "Standard_DS4_v2",
+                        "Standard_DS5_v2",
+                        "Standard_DS11_v2",
+                        "Standard_DS12_v2",
+                        "Standard_DS13-2_v2",
+                        "Standard_DS13-4_v2",
+                        "Standard_DS13_v2",
+                        "Standard_DS14-4_v2",
+                        "Standard_DS14-8_v2",
+                        "Standard_DS14_v2",
+                        "Standard_DS15_v2",
+                        "Standard_F1s",
+                        "Standard_F2s",
+                        "Standard_F4s",
+                        "Standard_F8s",
+                        "Standard_F16s",
+                        "Standard_D2s_v3",
+                        "Standard_D4s_v3",
+                        "Standard_D8s_v3",
+                        "Standard_D16s_v3",
+                        "Standard_D32s_v3",
+                        "Standard_A0",
+                        "Standard_A1",
+                        "Standard_A2",
+                        "Standard_A3",
+                        "Standard_A5",
+                        "Standard_A4",
+                        "Standard_A6",
+                        "Standard_A7",
+                        "Basic_A0",
+                        "Basic_A1",
+                        "Basic_A2",
+                        "Basic_A3",
+                        "Basic_A4",
+                        "Standard_D1_v2",
+                        "Standard_D2_v2",
+                        "Standard_D3_v2",
+                        "Standard_D4_v2",
+                        "Standard_D5_v2",
+                        "Standard_D11_v2",
+                        "Standard_D12_v2",
+                        "Standard_D13_v2",
+                        "Standard_D14_v2",
+                        "Standard_D15_v2",
+                        "Standard_F1",
+                        "Standard_F2",
+                        "Standard_F4",
+                        "Standard_F8",
+                        "Standard_F16",
+                        "Standard_A1_v2",
+                        "Standard_A2m_v2",
+                        "Standard_A2_v2",
+                        "Standard_A4m_v2",
+                        "Standard_A4_v2",
+                        "Standard_A8m_v2",
+                        "Standard_A8_v2",
+                        "Standard_D2_v3",
+                        "Standard_D4_v3",
+                        "Standard_D8_v3",
+                        "Standard_D16_v3",
+                        "Standard_D32_v3",
+                        "Standard_H8",
+                        "Standard_H16",
+                        "Standard_H8m",
+                        "Standard_H16m",
+                        "Standard_H16r",
+                        "Standard_H16mr",
+                        "Standard_D1",
+                        "Standard_D2",
+                        "Standard_D3",
+                        "Standard_D4",
+                        "Standard_D11",
+                        "Standard_D12",
+                        "Standard_D13",
+                        "Standard_D14",
+                        "Standard_NV6",
+                        "Standard_NV12",
+                        "Standard_NV24",
+                        "Standard_NC6s_v2",
+                        "Standard_NC12s_v2",
+                        "Standard_NC24rs_v2",
+                        "Standard_NC24s_v2",
+                        "Standard_NC6",
+                        "Standard_NC12",
+                        "Standard_NC24",
+                        "Standard_NC24r",
+                        "Standard_DS1",
+                        "Standard_DS2",
+                        "Standard_DS3",
+                        "Standard_DS4",
+                        "Standard_DS11",
+                        "Standard_DS12",
+                        "Standard_DS13",
+                        "Standard_DS14",
+                        "Standard_NC6s_v3",
+                        "Standard_NC12s_v3",
+                        "Standard_NC24rs_v3",
+                        "Standard_NC24s_v3",
+                        "Standard_D64_v3",
+                        "Standard_D64s_v3",
+                        "Standard_E2_v3",
+                        "Standard_E4_v3",
+                        "Standard_E8_v3",
+                        "Standard_E16_v3",
+                        "Standard_E32_v3",
+                        "Standard_E64_v3",
+                        "Standard_E2s_v3",
+                        "Standard_E4s_v3",
+                        "Standard_E8s_v3",
+                        "Standard_E16s_v3",
+                        "Standard_E32-8s_v3",
+                        "Standard_E32-16s_v3",
+                        "Standard_E32s_v3",
+                        "Standard_E64-16s_v3",
+                        "Standard_E64-32s_v3",
+                        "Standard_E64s_v3",
+                        "Standard_F2s_v2",
+                        "Standard_F4s_v2",
+                        "Standard_F8s_v2",
+                        "Standard_F16s_v2",
+                        "Standard_F32s_v2",
+                        "Standard_F64s_v2",
+                        "Standard_F72s_v2",
+                        "Standard_ND6s",
+                        "Standard_ND12s",
+                        "Standard_ND24rs",
+                        "Standard_ND24s",
+                        "Standard_A8",
+                        "Standard_A9",
+                        "Standard_A10",
+                        "Standard_A11"
+                        ],
+      "metadata": {
+        "description": "Size of VMs in the VM Scale Set."
+      }
+    },
+      "jumpboxSku": {
+          "type": "string",
+          "allowedValues": [
+                        "Standard_B1ms",
+                        "Standard_B1s",
+                        "Standard_B2ms",
+                        "Standard_B2s",
+                        "Standard_B4ms",
+                        "Standard_B8ms",
+                        "Standard_DS1_v2",
+                        "Standard_DS2_v2",
+                        "Standard_DS3_v2",
+                        "Standard_DS4_v2",
+                        "Standard_DS5_v2",
+                        "Standard_DS11_v2",
+                        "Standard_DS12_v2",
+                        "Standard_DS13-2_v2",
+                        "Standard_DS13-4_v2",
+                        "Standard_DS13_v2",
+                        "Standard_DS14-4_v2",
+                        "Standard_DS14-8_v2",
+                        "Standard_DS14_v2",
+                        "Standard_DS15_v2",
+                        "Standard_F1s",
+                        "Standard_F2s",
+                        "Standard_F4s",
+                        "Standard_F8s",
+                        "Standard_F16s",
+                        "Standard_D2s_v3",
+                        "Standard_D4s_v3",
+                        "Standard_D8s_v3",
+                        "Standard_D16s_v3",
+                        "Standard_D32s_v3",
+                        "Standard_A0",
+                        "Standard_A1",
+                        "Standard_A2",
+                        "Standard_A3",
+                        "Standard_A5",
+                        "Standard_A4",
+                        "Standard_A6",
+                        "Standard_A7",
+                        "Basic_A0",
+                        "Basic_A1",
+                        "Basic_A2",
+                        "Basic_A3",
+                        "Basic_A4",
+                        "Standard_D1_v2",
+                        "Standard_D2_v2",
+                        "Standard_D3_v2",
+                        "Standard_D4_v2",
+                        "Standard_D5_v2",
+                        "Standard_D11_v2",
+                        "Standard_D12_v2",
+                        "Standard_D13_v2",
+                        "Standard_D14_v2",
+                        "Standard_D15_v2",
+                        "Standard_F1",
+                        "Standard_F2",
+                        "Standard_F4",
+                        "Standard_F8",
+                        "Standard_F16",
+                        "Standard_A1_v2",
+                        "Standard_A2m_v2",
+                        "Standard_A2_v2",
+                        "Standard_A4m_v2",
+                        "Standard_A4_v2",
+                        "Standard_A8m_v2",
+                        "Standard_A8_v2",
+                        "Standard_D2_v3",
+                        "Standard_D4_v3",
+                        "Standard_D8_v3",
+                        "Standard_D16_v3",
+                        "Standard_D32_v3",
+                        "Standard_H8",
+                        "Standard_H16",
+                        "Standard_H8m",
+                        "Standard_H16m",
+                        "Standard_H16r",
+                        "Standard_H16mr",
+                        "Standard_D1",
+                        "Standard_D2",
+                        "Standard_D3",
+                        "Standard_D4",
+                        "Standard_D11",
+                        "Standard_D12",
+                        "Standard_D13",
+                        "Standard_D14",
+                        "Standard_NV6",
+                        "Standard_NV12",
+                        "Standard_NV24",
+                        "Standard_NC6s_v2",
+                        "Standard_NC12s_v2",
+                        "Standard_NC24rs_v2",
+                        "Standard_NC24s_v2",
+                        "Standard_NC6",
+                        "Standard_NC12",
+                        "Standard_NC24",
+                        "Standard_NC24r",
+                        "Standard_DS1",
+                        "Standard_DS2",
+                        "Standard_DS3",
+                        "Standard_DS4",
+                        "Standard_DS11",
+                        "Standard_DS12",
+                        "Standard_DS13",
+                        "Standard_DS14",
+                        "Standard_NC6s_v3",
+                        "Standard_NC12s_v3",
+                        "Standard_NC24rs_v3",
+                        "Standard_NC24s_v3",
+                        "Standard_D64_v3",
+                        "Standard_D64s_v3",
+                        "Standard_E2_v3",
+                        "Standard_E4_v3",
+                        "Standard_E8_v3",
+                        "Standard_E16_v3",
+                        "Standard_E32_v3",
+                        "Standard_E64_v3",
+                        "Standard_E2s_v3",
+                        "Standard_E4s_v3",
+                        "Standard_E8s_v3",
+                        "Standard_E16s_v3",
+                        "Standard_E32-8s_v3",
+                        "Standard_E32-16s_v3",
+                        "Standard_E32s_v3",
+                        "Standard_E64-16s_v3",
+                        "Standard_E64-32s_v3",
+                        "Standard_E64s_v3",
+                        "Standard_F2s_v2",
+                        "Standard_F4s_v2",
+                        "Standard_F8s_v2",
+                        "Standard_F16s_v2",
+                        "Standard_F32s_v2",
+                        "Standard_F64s_v2",
+                        "Standard_F72s_v2",
+                        "Standard_ND6s",
+                        "Standard_ND12s",
+                        "Standard_ND24rs",
+                        "Standard_ND24s",
+                        "Standard_A8",
+                        "Standard_A9",
+                        "Standard_A10",
+                        "Standard_A11"
+                        ],
+          "metadata": {
+              "description": "Size of the jump box VM."
+          }
+      },
+      "CentOSversion": {
+          "type": "string",
+          "defaultValue": "6.8",
+          "allowedValues": [
+                            "6.5",
+                            "6.6",
+                            "6.7",
+                            "6.8",
+                            "6.9",
+                            "7.0",
+                            "7.1",
+                            "7.2",
+                            "7.3",
+                            "7.4"
+                            ],
+          "metadata": {
+              "description": "The HPC specific CentOS version for the VMs."
+          }
+      },
+    "vmssName": {
+      "type": "string",
+      "metadata": {
+        "description": "String used as a base for naming resources. Must be 3-61 characters in length and globally unique across Azure. A hash is prepended to this string for some resources, and resource-specific information is appended."
+      },
+      "maxLength": 61
+    },
+    "instanceCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Number of VM instances (100 or less)."
+      },
+      "maxValue": 100
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin username on all VMs."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin password on all VMs."
+      }
+    },
+    "vnetName": {
+       "type": "string",
+       "metadata": {
+         "description": "Name of the existing vnet to which the new nodes are to be attached."
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address prefix of the existing vnet (e.g. 172.22.128.0/16)."
+      }
+    },
+    "vnetResourceGroup": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the Resource Group in which the vnet exists."
+      }
+    },
+    "subnet1Name": {
+     "type": "string",
+     "metadata": {
+       "description": "Name of the existing subnet which exists in the vnet. This is the subnet to which the VM & VMSS compute nodes will be attached."
+      }
+    },
+    "subnet1Prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address prefix of the first subnet (e.g. 172.22.129.0/24), to which the VM & VMSS will be attached."
+      }
+    },
+    "subnet2Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing subnet which exists in the vnet."
+      }
+    },
+    "subnet2Prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address prefix of the second subnet (e.g. 172.22.130.0/24)."
+      }
+    },
+    "subnet3Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing subnet which exists in the vnet."
+      }
+    },
+    "subnet3Prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address prefix of the third subnet (e.g. 172.22.131.0/24)."
+      }
+    },
+    "subnet4Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing subnet which exists in the vnet."
+      }
+    },
+    "subnet4Prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address prefix of the fourth subnet (e.g. 172.22.132.0/24)."
+      }
+    },
+    "vmExtensionFileUri": {
+      "type": "string",
+      "metadata": {
+        "description": "Script file URI for the file to be downloaded for the headnode post-deployment customisation."
+      }
+    },
+    "vmExtensionAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account in which the script file for headnode post-deployment customisation is located (used for authentication)."
+      }
+    },
+    "vmExtensionAccountKey": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account key to authenticate the script file download for the headnode post-deployment customisation."
+      }
+    },
+    "vmExtensionCommandToExecute": {
+      "type": "string",
+      "metadata": {
+        "description": "Command to execute for the headnode post-deployment customisation (i.e. what command will the extension run?)."
+      }
+    },
+    "vmssExtensionFileUri": {
+      "type": "string",
+      "metadata": {
+        "description": "Script file URI for the file to be downloaded for the compute node(s) post-deployment customisation."
+      }
+    },
+    "vmssExtensionAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account in which the script file for compute node(s) post-deployment customisation is located (used for authentication)."
+      }
+    },
+    "vmssExtensionAccountKey": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account key to authenticate the script file download for the compute node(s) post-deployment customisation.."
+      }
+    },
+    "vmssExtensionCommandToExecute": {
+      "type": "string",
+      "metadata": {
+        "description": "Command to execute for the compute node(s) post-deployment customisation (i.e. what command will the extension run?)."
+      }
+    }
+  },
+  "variables": {
+    "namingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
+    "longNamingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
+    "jumpBoxName": "[concat(variables('namingInfix'), 'jbox')]",
+    "jumpBoxSAName": "[concat( parameters('vmssName'), uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix') ) ) )]",
+    "jumpBoxDiagSAName": "[concat( variables('jumpBoxSAName'), 'diag')]",
+    "jumpBoxDiagSAType":  "Standard_LRS",
+    "jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
+    "jumpBoxVHDContainerName": "[concat(variables('jumpBoxName'), 'vhd')]",
+    "jumpBoxIPConfigName": "[concat(variables('jumpBoxName'), 'ipconfig')]",
+    "jumpBoxNicName": "[concat(variables('jumpBoxName'), 'nic')]",
+    "newStorageAccountSuffix": "[concat(variables('namingInfix'), 'sa')]",
+    "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
+    "publicIPAddressName": "[concat(variables('namingInfix'), 'pip')]",
+    "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
+    "nicName": "[concat(variables('namingInfix'), 'nic')]",
+    "ipConfigName": "[concat(variables('namingInfix'), 'ipconfig')]",
+    "osType": {
+      "publisher": "openlogic",
+      "offer": "CentOS",
+      "sku": "[parameters('CentOSversion')]",
+      "version": "latest"
+    },
+    "ImageReference": "[variables('osType')]",
+    "computeApiVersion": "2017-03-30",
+    "networkApiVersion": "2017-04-01",
+    "storageApiVersion": "2015-06-15"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('vnetName')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2017-04-01",
+        "properties": {
+            "addressSpace": {
+                "addressPrefixes": [
+                    "[parameters('vnetAddressPrefix')]"
+            ]
+    },
+            "subnets": [
+              {
+            "name": "[parameters('subnet1Name')]",
+                "properties": {
+                  "addressPrefix": "[parameters('subnet1Prefix')]"
+                }
+              },
+              {
+                "name": "[parameters('subnet2Name')]",
+                "properties": {
+                  "addressPrefix": "[parameters('subnet2Prefix')]"
+                }
+              },
+              {
+                "name": "[parameters('subnet3Name')]",
+                "properties": {
+                  "addressPrefix": "[parameters('subnet3Prefix')]"
+                }
+              },
+              {
+                "name": "[parameters('subnet4Name')]",
+                "properties": {
+                  "addressPrefix": "[parameters('subnet4Prefix')]"
+                }
+              }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('jumpBoxSAName')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "properties": {
+        "accountType": "[parameters('storageAccountType')]"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('jumpBoxDiagSAName')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "properties": {
+        "accountType": "[variables('jumpBoxDiagSAType')]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2017-04-01",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('longNamingInfix')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('jumpBoxNicName')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2017-04-01",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
+      ],
+      "properties": {
+        "enableAcceleratedNetworking": false,
+        "ipConfigurations": [
+          {
+            "name": "[variables('jumpBoxIPConfigName')]",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('jumpBoxName')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2017-03-30",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxDiagSAName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('jumpBoxNicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('jumpboxSku')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('jumpBoxName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "ImageReference": "[variables('ImageReference')]",
+          "osDisk": {
+            "name": "[variables('jumpBoxOSDiskName')]",
+            "vhd": {
+              "uri": "[concat('http://',variables('jumpBoxSAName'),'.blob.core.windows.net/',variables('jumpBoxVHDContainerName'),'/',variables('jumpBoxOSDiskName'),'.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('jumpBoxNicName'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "true",
+            "storageUri": "[concat('http://',variables('jumpBoxDiagSAName'),'.blob.core.windows.net')]"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('jumpBoxName'),'/headnodeextensionscript')]",
+      "apiVersion": "2017-03-30",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('jumpBoxName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "settings": {
+          "fileUris": [ "[parameters('vmExtensionFileUri')]" ]
+        },
+        "protectedSettings": {
+          "commandToExecute": "[parameters('vmExtensionCommandToExecute')]",
+          "storageAccountName": "[parameters('vmExtensionAccountName')]",
+          "storageAccountKey": "[parameters('vmExtensionAccountKey')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachineScaleSets",
+      "name": "[variables('namingInfix')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2017-03-30",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
+      ],
+      "sku": {
+        "name": "[parameters('vmssSku')]",
+        "tier": "Standard",
+        "capacity": "[parameters('instanceCount')]"
+      },
+      "properties": {
+        "overprovision": "true",
+        "upgradePolicy": {
+          "mode": "Manual"
+        },
+        "virtualMachineProfile": {
+          "storageProfile": {
+            "osDisk": {
+              "createOption": "FromImage"
+            },
+            "ImageReference": "[variables('ImageReference')]"
+          },
+          "osProfile": {
+            "computerNamePrefix": "[variables('namingInfix')]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]"
+          },
+          "networkProfile": {
+            "networkInterfaceConfigurations": [
+              {
+                "name": "[variables('nicName')]",
+                "properties": {
+                  "primary": "true",
+                  "enableAcceleratedNetworking": false,
+                  "ipConfigurations": [
+                    {
+                      "name": "[variables('ipConfigName')]",
+                      "properties": {
+                        "subnet": {
+                          "id": "[variables('subnetRef')]"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "extensionProfile": {
+            "extensions": [
+              {
+                "name": "vmss-customisation",
+                "properties": {
+                  "publisher": "Microsoft.Azure.Extensions",
+                  "type": "CustomScript",
+                  "typeHandlerVersion": "2.0",
+                  "autoUpgradeMinorVersion": true,
+                  "settings": {
+                    "fileUris": [ "[parameters('vmssExtensionFileUri')]" ]
+                  },
+                  "protectedSettings": {
+                    "commandToExecute": "[parameters('vmssExtensionCommandToExecute')]",
+                    "storageAccountName": "[parameters('vmssExtensionAccountName')]",
+                    "storageAccountKey": "[parameters('vmssExtensionAccountKey')]"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

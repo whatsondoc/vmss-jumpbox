@@ -1,0 +1,90 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountType": {
+      "value": "<<_storage_account_type_>>"
+    },
+    "vmssSku": {
+      "value": "<<_compute_SKU_>>"
+    },
+    "jumpboxSku": {
+      "value": "<<_jumpbox_SKU_>>"
+    },
+    "CentOSversion": {
+      "value": "<<_OS_version_>>"
+    },
+    "vmssName": {
+      "value": "<<_vmss_name_>>"
+    },
+    "instanceCount": {
+      "value": <<_instance_number_>>
+    },
+    "adminUsername": {
+      "value": "<<_username_>>"
+    },
+    "adminPassword": {
+      "value": "<<_password_>>"
+    },
+    "vnetName": {
+        "value": "<<_vnet_name_>>"
+    },
+    "vnetAddressPrefix": {
+      "value": "<<_vnet_IP_prefix_>>"
+    },
+    "vnetResourceGroup": {
+        "value": "<<_RG_name_>>"
+    },
+    "subnet1Name": {
+        "value": "<<_subnet_name_>>"
+    },
+    "subnet1Prefix": {
+      "value": "<<_subnet_IP_prefix_>>",
+      "metadata": {
+        "description": "This is the subnet that the nodes created will be attached to."
+      }
+    },
+    "subnet2Name": {
+      "value": "<<_subnet_name_>>"
+    },
+    "subnet2Prefix": {
+      "value": "<<_subnet_IP_prefix_>>"
+    },
+    "subnet3Name": {
+      "value": "<<_subnet_name_>>"
+    },
+    "subnet3Prefix": {
+      "value": "<<_subnet_IP_prefix_>>"
+    },
+    "subnet4Name": {
+      "value": "<<_subnet_name_>>"
+    },
+    "subnet4Prefix": {
+      "value": "<<_subnet_IP_prefix_>>"
+    },
+    "vmExtensionFileUri": {
+      "value": "<<_vm_file_uri_>>"
+    },
+    "vmExtensionAccountName": {
+      "value": "<<_vm_account_name_>>"
+    },
+    "vmExtensionAccountKey": {
+      "value": "<<_vm_account_key_>>"
+    },
+    "vmExtensionCommandToExecute": {
+      "value": "<<_vm_command_>>"
+    },
+    "vmssExtensionFileUri": {
+      "value": "<<_vmss_file_uri_>>"
+    },
+    "vmssExtensionAccountName": {
+      "value": "<<_vmss_account_name_>>"
+    },
+    "vmssExtensionAccountKey": {
+      "value": "<<_vmss_account_key_>>"
+    },
+    "vmssExtensionCommandToExecute": {
+      "value": "<<_vmss_command_>>"
+    }
+  }
+}
