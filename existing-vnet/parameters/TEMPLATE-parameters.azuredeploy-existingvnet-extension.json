@@ -2,6 +2,9 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "storageAccountType": {
+      "value": "<<_storage_account_type_>>"
+    },
     "vmssSku": {
       "value": "<<_compute_SKU_>>"
     },
@@ -29,8 +32,14 @@
     "vnetResourceGroup": {
         "value": "<<_RG_name_>>"
     },
+    "vnetAddressPrefix": {
+      "value": "<<_vnet_IP_prefix_>>"
+    },
     "subnetName": {
         "value": "<<_subnet_name_>>"
+    },
+    "subnetPrefix": {
+      "value": "<<_subnet_IP_prefix_>>"
     },
     "vmExtensionFileUri": {
       "value": "<<_vm_file_uri_>>"
