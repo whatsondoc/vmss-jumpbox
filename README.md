@@ -4,9 +4,10 @@ Modified version from the Azure quickstart templates:
 
 - Allows for multiple repeat uses of the deployment template (all created entities have largely uniquely generated names)
 - Allows for creation of a new vnet (along with new storage account) or to deploy all VMs into an existing vnet and subnet
-  -- If you have multiple subnets in the vnet. you may need to amend the template to include details of all subnets to avoid ARM trying to delete non-specified subnets
-- HPC optimised; parameter files have options for A8/A9 and H16r instances. Other VM SKUs can be added if necessary. HPC specific OS distros also added as choice options
-- Jumpbox has a different VM SKU than the VMSS compute nodes
+- Support for Premium & Standard storage
+- Support for Accelerated Networking
+- Jumpbox has a different VM SKU than the VMSS compute nodes (allowed values for SKUs has been increased significantly)
+- Includes custom script extension for both jumpbox/headnode and VMSS nodes
 - user-authentication.sh has been modified slightly to add a reminder for pre-reqs and syntax, and to reference variables as opposed to hardcoded values
 
 
@@ -22,7 +23,9 @@ It may be a good idea to clone this GitHub repo to your user login on the Azure 
 
 <b>EXAMPLE:</b>       $ az group deployment create --resource-group h16r-compute --template-file azuredeploy-newvnet.json --parameters azuredeploy-newvnet-ER.parameters.json
 
-The deployment templates allow for the use of the custom script extension, to customise environments during the provisioning phase. Compiling scripts at executing at this stage is preferable, given VM Scale Sets can be expanded to accommodate additional nodes with the same configuration.
+The deployment templates allow for the use of the custom script extension, to customise environments during the provisioning phase. Compiling scripts at executing at this stage is preferable, given VM Scale Sets can be expanded to accommodate additional nodes with the same configuration. Scripts to be used with the custom script extension are defined in the parameter files.
+
+
 
 
 Should you wish to perform manual customisation, once the infrastructure has been created, there are a few nested scripts that offer various configuration options. You can scp these scripts to your jumpbox/headnode using scp:
