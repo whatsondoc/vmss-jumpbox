@@ -160,7 +160,7 @@
         "description": "Size of VMs in the VM Scale Set."
       }
     },
-      "jumpboxSku": {
+      "headnodeSku": {
           "type": "string",
           "allowedValues": [
                             "Standard_B1ms",
@@ -308,25 +308,37 @@
               "description": "Size of the jump box VM."
           }
       },
-      "CentOSversion": {
-          "type": "string",
-          "defaultValue": "6.8",
-          "allowedValues": [
-                            "6.5",
-                            "6.6",
-                            "6.7",
-                            "6.8",
-                            "6.9",
-                            "7.0",
-                            "7.1",
-                            "7.2",
-                            "7.3",
-                            "7.4"
-                            ],
-          "metadata": {
-              "description": "The HPC specific CentOS version for the VMs."
-          }
-      },
+    "headnodeCentOSversion": {
+      "type": "string",
+      "defaultValue": "6.8",
+      "allowedValues": [
+        "6.5",
+        "6.6",
+        "6.7",
+        "6.8",
+        "6.9",
+        "7.0",
+        "7.1",
+        "7.2",
+        "7.3",
+        "7.4"
+      ],
+      "metadata": {
+        "description": "The specific CentOS version for the headnode VM."
+      }
+    },
+    "computeCentOSversion": {
+      "type": "string",
+      "allowedValues": [
+        "6.5",
+        "6.8",
+        "7.1",
+        "7.3"
+      ],
+      "metadata": {
+        "description": "The HPC-specific CentOS version for the compute VMs."
+      }
+    },
     "vmssName": {
       "type": "string",
       "metadata": {
@@ -435,14 +447,14 @@
   "variables": {
     "namingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
     "longNamingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
-    "jumpBoxName": "[concat(variables('namingInfix'), 'jbox')]",
-    "jumpBoxSAName": "[concat( parameters('vmssName'), uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix') ) ) )]",
-    "jumpBoxDiagSAName": "[concat( variables('jumpBoxSAName'), 'diag')]",
-    "jumpBoxDiagSAType": "Standard_LRS",
-    "jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
-    "jumpBoxVHDContainerName": "[concat(variables('jumpBoxName'), 'vhd')]",
-    "jumpBoxIPConfigName": "[concat(variables('jumpBoxName'), 'ipconfig')]",
-    "jumpBoxNicName": "[concat(variables('jumpBoxName'), 'nic')]",
+    "headnodeName": "[concat(variables('namingInfix'), 'headnode')]",
+    "headnodeSAName": "[concat( parameters('vmssName'), uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix') ) ) )]",
+    "headnodeDiagSAName": "[concat( variables('headnodeSAName'), 'diag')]",
+    "headnodeDiagSAType": "Standard_LRS",
+    "headnodeOSDiskName": "[concat(variables('headnodeName'), 'osdisk')]",
+    "headnodeVHDContainerName": "[concat(variables('headnodeName'), 'vhd')]",
+    "headnodeIPConfigName": "[concat(variables('headnodeName'), 'ipconfig')]",
+    "headnodeNicName": "[concat(variables('headnodeName'), 'nic')]",
     "newStorageAccountSuffix": "[concat(variables('namingInfix'), 'sa')]",
     "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
@@ -450,13 +462,20 @@
     "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
     "nicName": "[concat(variables('namingInfix'), 'nic')]",
     "ipConfigName": "[concat(variables('namingInfix'), 'ipconfig')]",
-    "osType": {
+    "headnodeOsType": {
       "publisher": "openlogic",
       "offer": "CentOS",
-      "sku": "[parameters('CentOSversion')]",
+      "sku": "[parameters('headnodeCentOSversion')]",
       "version": "latest"
     },
-    "ImageReference": "[variables('osType')]",
+    "headnodeImageReference": "[variables('headnodeOsType')]",
+    "computeOsType": {
+      "publisher": "openlogic",
+      "offer": "CentOS-HPC",
+      "sku": "[parameters('computeCentOSversion')]",
+      "version": "latest"
+    },
+    "ImageReference": "[variables('computeOsType')]",
     "computeApiVersion": "2017-03-30",
     "networkApiVersion": "2017-04-01",
     "storageApiVersion": "2015-06-15"
@@ -485,7 +504,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('jumpBoxSAName')]",
+      "name": "[variables('headnodeSAName')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
       "properties": {
@@ -494,11 +513,11 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('jumpBoxDiagSAName')]",
+      "name": "[variables('headnodeDiagSAName')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
       "properties": {
-        "accountType": "[variables('jumpBoxDiagSAType')]"
+        "accountType": "[variables('headnodeDiagSAType')]"
       }
     },
     {
@@ -515,7 +534,7 @@
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('jumpBoxNicName')]",
+      "name": "[variables('headnodeNicName')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2017-04-01",
       "dependsOn": [
@@ -526,7 +545,7 @@
         "enableAcceleratedNetworking": false,
         "ipConfigurations": [
           {
-            "name": "[variables('jumpBoxIPConfigName')]",
+            "name": "[variables('headnodeIPConfigName')]",
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
@@ -542,29 +561,29 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('jumpBoxName')]",
+      "name": "[variables('headnodeName')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2017-03-30",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
-        "[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxDiagSAName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('jumpBoxNicName'))]"
+        "[concat('Microsoft.Storage/storageAccounts/', variables('headnodeSAName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('headnodeDiagSAName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('headnodeNicName'))]"
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[parameters('jumpboxSku')]"
+          "vmSize": "[parameters('headnodeSku')]"
         },
         "osProfile": {
-          "computerName": "[variables('jumpBoxName')]",
+          "computerName": "[variables('headnodeName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
-          "ImageReference": "[variables('ImageReference')]",
+          "ImageReference": "[variables('headnodeImageReference')]",
           "osDisk": {
-            "name": "[variables('jumpBoxOSDiskName')]",
+            "name": "[variables('headnodeOSDiskName')]",
             "vhd": {
-              "uri": "[concat('http://',variables('jumpBoxSAName'),'.blob.core.windows.net/',variables('jumpBoxVHDContainerName'),'/',variables('jumpBoxOSDiskName'),'.vhd')]"
+              "uri": "[concat('http://',variables('headnodeSAName'),'.blob.core.windows.net/',variables('headnodeVHDContainerName'),'/',variables('headnodeOSDiskName'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -573,25 +592,25 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('jumpBoxNicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('headnodeNicName'))]"
             }
           ]
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": "true",
-            "storageUri": "[concat('http://',variables('jumpBoxDiagSAName'),'.blob.core.windows.net')]"
+            "storageUri": "[concat('http://',variables('headnodeDiagSAName'),'.blob.core.windows.net')]"
           }
         }
       }
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('jumpBoxName'),'/headnodeextensionscript')]",
+      "name": "[concat(variables('headnodeName'),'/headnodeextensionscript')]",
       "apiVersion": "2017-03-30",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('jumpBoxName'))]"
+        "[concat('Microsoft.Compute/virtualMachines/', variables('headnodeName'))]"
       ],
       "properties": {
         "publisher": "Microsoft.Azure.Extensions",

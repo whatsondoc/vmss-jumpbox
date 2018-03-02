@@ -1,0 +1,60 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountType": {
+      "value": "<<_storage_account_type_>>"
+    },
+    "headnodeSku": {
+      "value": "<<_headnode_sku_>>"
+    },
+    "headnodeCentOSversion": {
+      "value": "<<_headnode_OS_version_>>"
+    },
+    "vmssSku": {
+      "value": "<<_vmss_sku_>>"
+    },
+    "computeCentOSversion": {
+      "value": "<<_compute_OS_version_>>"
+    },
+    "vmssName": {
+      "value": "<<_vmss_name_>>"
+    },
+    "instanceCount": {
+      "value": <<_number_of_instances_>>
+    },
+    "adminUsername": {
+      "value": "<<_admin_username_>>"
+    },
+    "adminPassword": {
+      "value": "<<_admin_password_>>"
+    },
+    "rsaKey": {
+      "value": "<<_rsa_key_>>"
+    },
+    "vmExtensionFileUri": {
+      "value": "<<_headnode_extension_file_uri_>>"
+    },
+    "vmExtensionAccountName": {
+      "value": "<<_headnode_extension_storage_account_name_>>"
+    },
+    "vmExtensionAccountKey": {
+      "value": "<<_headnode_extension_storage_account_key_>>"
+    },
+    "vmExtensionCommandToExecute": {
+      "value": "<<_headnode_extension_script_command_>>"
+    },
+    "vmssExtensionFileUri": {
+      "value": "<<_compute_extension_file_uri_>>"
+    },
+    "vmssExtensionAccountName": {
+      "value": "<<_compute_extension_storage_account_name_>>"
+    },
+    "vmssExtensionAccountKey": {
+      "value": "<<_compute_extension_storage_account_key_>>"
+    },
+    "vmssExtensionCommandToExecute": {
+      "value": "<<_compute_extension_script_command_>>"
+    }
+  }
+}

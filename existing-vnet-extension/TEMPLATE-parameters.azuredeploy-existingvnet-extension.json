@@ -8,10 +8,13 @@
     "vmssSku": {
       "value": "<<_compute_SKU_>>"
     },
-    "jumpboxSku": {
+    "headnodeSku": {
       "value": "<<_jumpbox_SKU_>>"
     },
-    "CentOSversion": {
+    "headnodeCentOSversion": {
+      "value": "<<_OS_version_>>"
+    },
+    "computeCentOSversion": {
       "value": "<<_OS_version_>>"
     },
     "vmssName": {

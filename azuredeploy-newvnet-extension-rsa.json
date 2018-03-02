@@ -302,10 +302,10 @@
                         "Standard_A8",
                         "Standard_A9",
                         "Standard_A10",
-                        "Standard_A11",
+                        "Standard_A11"
       ],
       "metadata": {
-        "description": "Size of the jump box VM."
+        "description": "Size of the headnode box VM."
       }
     },
     "headnodeCentOSversion": {
@@ -338,7 +338,7 @@
       "metadata": {
         "description": "The HPC-specific CentOS version for the compute VMs."
       }
-    },    
+    },
     "vmssName": {
       "type": "string",
       "metadata": {
@@ -365,34 +365,58 @@
         "description": "Admin password on all VMs."
       }
     },
-    "vnetName": {
+    "rsaKey": {
       "type": "string",
       "metadata": {
-        "description": "Name of the existing vnet to which the new nodes are to be attached."
+        "description": "Public key to connect to the headnode server" 
+    }
+   },
+    "vmExtensionFileUri": {
+      "type": "string",
+      "metadata": {
+        "description": "Script file URI for the file to be downloaded for the headnode post-deployment customisation."
       }
     },
-    "vnetResourceGroup": {
+    "vmExtensionAccountName": {
       "type": "string",
       "metadata": {
-        "description": "Name of the Resource Group in which the vnet exists."
+        "description": "Storage account in which the script file for headnode post-deployment customisation is located (used for authentication)."
       }
     },
-    "subnetName": {
+    "vmExtensionAccountKey": {
       "type": "string",
       "metadata": {
-        "description": "Name of the existing subnet which exists in the vnet."
+        "description": "Storage account key to authenticate the script file download for the headnode post-deployment customisation."
       }
     },
-    "addressPrefix": {
+    "vmExtensionCommandToExecute": {
       "type": "string",
       "metadata": {
-        "description": "IP address prefix of the existing vnet (e.g. 172.22.128.0/18)."
+        "description": "Command to execute for the headnode post-deployment customisation (i.e. what command will the extension run?)."
       }
     },
-    "subnetPrefix": {
+    "vmssExtensionFileUri": {
       "type": "string",
       "metadata": {
-        "description": "IP address prefix of the subnet the nodes will be connected to (e.g. 172.22.129.0/24)."
+        "description": "Script file URI for the file to be downloaded for the compute node(s) post-deployment customisation."
+      }
+    },
+    "vmssExtensionAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account in which the script file for compute node(s) post-deployment customisation is located (used for authentication)."
+      }
+    },
+    "vmssExtensionAccountKey": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account key to authenticate the script file download for the compute node(s) post-deployment customisation.."
+      }
+    },
+    "vmssExtensionCommandToExecute": {
+      "type": "string",
+      "metadata": {
+        "description": "Command to execute for the compute node(s) post-deployment customisation (i.e. what command will the extension run?)."
       }
     }
   },
@@ -400,7 +424,7 @@
     "namingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
     "longNamingInfix": "[toLower( concat( parameters('vmssName'), uniqueString(resourceGroup().id) ) )]",
     "headnodeName": "[concat(variables('namingInfix'), 'headnode')]",
-    "headnodeSAName": "[concat( parameters('vmssName'), uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix') ) ) )]",
+    "headnodeSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'headnodesa')), 'jb')]",
     "headnodeDiagSAName": "[concat( variables('headnodeSAName'), 'diag')]",
     "headnodeDiagSAType": "Standard_LRS",
     "headnodeOSDiskName": "[concat(variables('headnodeName'), 'osdisk')]",
@@ -408,8 +432,12 @@
     "headnodeIPConfigName": "[concat(variables('headnodeName'), 'ipconfig')]",
     "headnodeNicName": "[concat(variables('headnodeName'), 'nic')]",
     "newStorageAccountSuffix": "[concat(variables('namingInfix'), 'sa')]",
-    "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
+    "addressPrefix": "10.0.0.0/16",
+    "subnetPrefix": "10.0.0.0/24",
+    "virtualNetworkName": "[concat(variables('namingInfix'), 'vnet')]",
+    "subnetName": "[concat(variables('namingInfix'), 'subnet')]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "publicIPAddressName": "[concat(variables('namingInfix'), 'pip')]",
     "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
     "nicName": "[concat(variables('namingInfix'), 'nic')]",
@@ -435,22 +463,22 @@
   "resources": [
     {
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[parameters('vnetName')]",
+      "name": "[variables('virtualNetworkName')]",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2017-04-01",
-        "properties": {
-            "addressSpace": {
-                "addressPrefixes": [
-                    "[parameters('addressPrefix')]"
-            ]
+      "apiVersion": "2017-10-01",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('addressPrefix')]"
+          ]
         },
-            "subnets": [
-        {
-            "name": "[parameters('subnetName')]",
-                "properties": {
-                        "addressPrefix": "[parameters('subnetPrefix')]"
-                }
+        "subnets": [
+          {
+            "name": "[variables('subnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix')]"
             }
+          }
         ]
       }
     },
@@ -464,10 +492,19 @@
       }
     },
     {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('headnodeDiagSAName')]",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "properties": {
+        "accountType": "[variables('headnodeDiagSAType')]"
+      }
+    },
+    {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2017-04-01",
+      "apiVersion": "2017-10-01",
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
@@ -479,10 +516,10 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('headnodeNicName')]",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2017-04-01",
+      "apiVersion": "2017-10-01",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
       "properties": {
         "enableAcceleratedNetworking": false,
@@ -519,7 +556,17 @@
         "osProfile": {
           "computerName": "[variables('headnodeName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "linuxConfiguration": {
+						"disablePasswordAuthentication": true,
+						"ssh": {
+							"publicKeys": [
+								{
+									"path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+									"keyData": "[parameters('rsaKey')]"
+								}
+							]
+						}
+					}
         },
         "storageProfile": {
           "ImageReference": "[variables('headnodeImageReference')]",
@@ -548,12 +595,35 @@
       }
     },
     {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('headnodeName'),'/headnodeextensionscript')]",
+      "apiVersion": "2017-03-30",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('headnodeName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "settings": {
+          "fileUris": [ "[parameters('vmExtensionFileUri')]" ]
+        },
+        "protectedSettings": {
+          "commandToExecute": "[parameters('vmExtensionCommandToExecute')]",
+          "storageAccountName": "[parameters('vmExtensionAccountName')]",
+          "storageAccountKey": "[parameters('vmExtensionAccountKey')]"
+        }
+      }
+    },
+    {
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "name": "[variables('namingInfix')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2017-03-30",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+        "[concat('Microsoft.Compute/virtualMachines/', variables('headnodeName'))]"
       ],
       "sku": {
         "name": "[parameters('vmssSku')]",
@@ -561,7 +631,7 @@
         "capacity": "[parameters('instanceCount')]"
       },
       "properties": {
-        "overprovision": "true",
+        "overprovision": "false",
         "upgradePolicy": {
           "mode": "Manual"
         },
@@ -575,7 +645,18 @@
           "osProfile": {
             "computerNamePrefix": "[variables('namingInfix')]",
             "adminUsername": "[parameters('adminUsername')]",
-            "adminPassword": "[parameters('adminPassword')]"
+            "adminPassword": "[parameters('adminPassword')]",
+            "linuxConfiguration": {
+              "disablePasswordAuthentication": false,
+              "ssh": {
+                "publicKeys": [
+                  {
+                    "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+                    "keyData": "[parameters('rsaKey')]"
+                  }
+                ]
+              }
+            }
           },
           "networkProfile": {
             "networkInterfaceConfigurations": [
@@ -589,11 +670,32 @@
                       "name": "[variables('ipConfigName')]",
                       "properties": {
                         "subnet": {
-                          "id": "[variables('subnetRef')]"
+                          "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'), '/subnets/', variables('subnetName'))]"
                         }
                       }
                     }
                   ]
+                }
+              }
+            ]
+          },
+          "extensionProfile": {
+            "extensions": [
+              {
+                "name": "vmss-customisation",
+                "properties": {
+                  "publisher": "Microsoft.Azure.Extensions",
+                  "type": "CustomScript",
+                  "typeHandlerVersion": "2.0",
+                  "autoUpgradeMinorVersion": true,
+                  "settings": {
+                    "fileUris": [ "[parameters('vmssExtensionFileUri')]" ]
+                  },
+                  "protectedSettings": {
+                    "commandToExecute": "[parameters('vmssExtensionCommandToExecute')]",
+                    "storageAccountName": "[parameters('vmssExtensionAccountName')]",
+                    "storageAccountKey": "[parameters('vmssExtensionAccountKey')]"
+                  }
                 }
               }
             ]

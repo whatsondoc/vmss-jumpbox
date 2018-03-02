@@ -1,0 +1,30 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmssSku": {
+      "value": "<<_vmss_SKU_>>"
+    },
+    "headnodeSku": {
+      "value": "<<_headnode_SKU_>>"
+    },
+    "computeCustomImage": {
+      "value": "<<_resourceID_of_custom_image_>>"
+    },
+    "headnodeCustomImage": {
+      "value": "<<_resourceID_of_custom_image_>>"
+    },
+    "vmssName": {
+      "value": "<<_vmss_name_>>"
+    },
+    "instanceCount": {
+      "value": <<_number_of_vmss_instances_>>
+    },
+    "adminUsername": {
+      "value": "<<_admin_username_>>"
+    },
+    "adminPassword": {
+      "value": "<<_admin_password_>>"
+    }
+  }
+}
