@@ -347,7 +347,7 @@
         "low"
       ],
       "metadata": {
-        "description": "Specify whether the nodes will be dedicated or Low Priority."
+        "description": "Specify whether the nodes will be dedicated or Low Priority. When choosing regular nodes, remove the line: 'evictionPolicy' in the VirtualMachineScaleSet resource definition below."
       }
     }, 
     "vmssName": {
