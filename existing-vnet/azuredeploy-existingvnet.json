@@ -333,12 +333,23 @@
         "6.5",
         "6.8",
         "7.1",
-        "7.3"
+        "7.3",
+        "7.4"
       ],
       "metadata": {
         "description": "The HPC-specific CentOS version for the compute VMs."
       }
-    },    
+    },
+    "priority": {
+      "type": "string",
+      "allowedValues": [
+        "dedicated",
+        "low"
+      ],
+      "metadata": {
+        "description": "Specify whether the nodes will be dedicated or Low Priority."
+      }
+    },   
     "vmssName": {
       "type": "string",
       "metadata": {
@@ -551,7 +562,7 @@
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "name": "[variables('namingInfix')]",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2017-03-30",
+      "apiVersion": "2017-10-30-preview",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
       ],
@@ -566,6 +577,8 @@
           "mode": "Manual"
         },
         "virtualMachineProfile": {
+          "priority": "[parameters('priority')]",
+          "evictionPolicy": "delete",
           "storageProfile": {
             "osDisk": {
               "createOption": "FromImage"
