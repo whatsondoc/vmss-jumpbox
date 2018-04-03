@@ -18,7 +18,7 @@
       "value": "<<_OS_version_>>"
     },
     "priority": {
-      "value": "<<_dedicated_or_low_>>"
+      "value": "<<_regular_or_low_>>"
     },
     "vmssName": {
       "value": "<<_vmss_name_>>"

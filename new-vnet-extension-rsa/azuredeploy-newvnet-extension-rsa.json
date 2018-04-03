@@ -343,7 +343,7 @@
     "priority": {
       "type": "string",
       "allowedValues": [
-        "dedicated",
+        "regular",
         "low"
       ],
       "metadata": {

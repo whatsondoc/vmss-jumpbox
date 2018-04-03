@@ -18,7 +18,7 @@
       "value": "<<_vmss_name_>>"
     },
     "priority": {
-      "value": "<<_dedicated_or_low_>>"
+      "value": "<<_regular_or_low_>>"
     },
     "instanceCount": {
       "value": <<_number_of_vmss_instances_>>
